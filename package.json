@@ -1,0 +1,23 @@
+{
+  "name": "js-project-evaluation",
+  "version": "1.0.0",
+  "description": "JS project for paysera candidate assessment",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TahmidRahman/js-project-evaluation.git"
+  },
+  "keywords": [
+    "javascript",
+    "airbnb"
+  ],
+  "author": "Tahmid Rahman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TahmidRahman/js-project-evaluation/issues"
+  },
+  "homepage": "https://github.com/TahmidRahman/js-project-evaluation#readme"
+}
