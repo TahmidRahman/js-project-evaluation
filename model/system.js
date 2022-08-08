@@ -6,14 +6,20 @@ export default class System {
     this.config = config;
   }
 
+  findAccountById(id) {
+    return this.accounts.find((acc) => acc && acc.getId() == id);
+  }
+
+  createAccount(id) {
+    const account = new Account(id, this.config);
+    this.accounts = this.accounts.concat(account);
+    return account;
+  }
+
   findOrCreateAccount(id) {
-    let account;
-    if (this.accounts.length) {
-      account = this.accounts.find((acc) => acc.getId() == id);
-    }
+    let account = this.findAccountById(id);
     if (!account) {
-      account = new Account(id, this.config);
-      this.accounts = this.accounts.concat(account);
+      account = this.createAccount(id);
     }
     return account;
   }
