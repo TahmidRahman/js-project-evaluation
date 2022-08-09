@@ -1,5 +1,5 @@
 import Operation from './model/operation.js';
-import OperationDetails from './model/payment.js';
+import OperationDetails from './model/operation-details.js';
 import System from './model/system.js';
 import { getConfig } from './utils/config.js';
 import { isValidFileInput, parseDataFromFile } from './utils/file.js';
