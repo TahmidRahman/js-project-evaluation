@@ -42,14 +42,13 @@ export default class Account {
     const operation = this.getLastOperation();
     const operationType = operation.getType();
     const operationUserType = operation.getUserType();
-    const allOperations = this.getOperations();
     const commission = this.config[operationType][operationUserType];
     if (commission.max) {
       return this.handleMaxCommission(operation, commission);
     } else if (commission.min) {
       return this.handleMinCommission(operation, commission);
     } else if (commission.week_limit) {
-      return this.handleWeeklyCommission(operation, commission, allOperations);
+      return this.handleWeeklyCommission(operation, commission);
     }
   }
 
