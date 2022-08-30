@@ -10,7 +10,7 @@ async function runApp() {
     const data = parseDataFromFile(fileInput);
     const config = await getConfig();
     const paymentSystem = new System(config);
-    for (let operationItem of data) {
+    for (const operationItem of data) {
       const { date, user_id, user_type, type, operation } = operationItem;
       const { amount, currency } = operation;
       const operationDetails = new OperationDetails(amount, currency);
