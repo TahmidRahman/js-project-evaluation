@@ -21,7 +21,7 @@ async function runApp() {
         type,
         operationDetails
       );
-      const account = paymentSystem.findOrCreateAccount(user_id);
+      const account = paymentSystem.findOrCreateAccount(user_id, user_type);
       account.addOperation(operationInstance);
       process.stdout.write(account.getCommissionOfLastOperation());
       process.stdout.write('\n');

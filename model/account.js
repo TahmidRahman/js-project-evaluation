@@ -2,8 +2,9 @@ import { round, smallestCurrency } from '../utils/format.js';
 import startOfWeek from 'date-fns/startOfWeek/index.js';
 
 export default class Account {
-  constructor(id, config) {
+  constructor(id, type, config) {
     this.id = id;
+    this.type = type;
     this.operations = [];
     this.config = config;
     this.weeks = {};
@@ -16,6 +17,14 @@ export default class Account {
 
   setId(id) {
     this.id = id;
+  }
+
+  getType() {
+    return this.type;
+  }
+
+  setType(type) {
+    this.type = type;
   }
 
   setOperations(operations) {
@@ -40,6 +49,10 @@ export default class Account {
 
   getCommissionOfLastOperation() {
     const operation = this.getLastOperation();
+    return this.getCommission(operation);
+  }
+
+  getCommission(operation) {
     const operationType = operation.getType();
     const operationUserType = operation.getUserType();
     const commission = this.config[operationType][operationUserType];
@@ -72,26 +85,20 @@ export default class Account {
 
   handleWeeklyCommission(operation, commission) {
     const amount = operation.getOperationDetails().getAmount();
-    const startOfWeekDate = startOfWeek(
-      new Date(operation.getDate())
-    ).toISOString();
+    const startOfWeekDate = startOfWeek(new Date(operation.getDate()), {
+      weekStartsOn: 1
+    }).toISOString();
     if (!this.weeks[startOfWeekDate]) {
       this.weeks[startOfWeekDate] = amount;
     } else {
       this.weeks[startOfWeekDate] += amount;
     }
     if (this.weeks[startOfWeekDate] > commission.week_limit.amount) {
-      const calculatedCommission = smallestCurrency(
-        (this.weeks[startOfWeekDate] - commission.week_limit.amount) *
-          commission.percents
-      );
-
-      const extraCommission = !this.countedWeeks[startOfWeekDate]
-        ? calculatedCommission
-        : round(calculatedCommission - this.countedWeeks[startOfWeekDate]);
-
-      this.countedWeeks[startOfWeekDate] = calculatedCommission;
-      return extraCommission;
+      const extendedAmount =
+        this.weeks[startOfWeekDate] -
+        (this.countedWeeks[startOfWeekDate] || commission.week_limit.amount);
+      this.countedWeeks[startOfWeekDate] = this.weeks[startOfWeekDate];
+      return smallestCurrency(extendedAmount * commission.percents);
     } else {
       return round(0);
     }
